@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Gözde-chan Mini</title>
+  <style>
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;background:#f4f2ee}
+    .wrap{max-width:420px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;gap:14px;padding:18px}
+    .card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+    h1{font-size:18px;margin:4px 0 0;text-align:center}
+    .scene{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .row{display:flex;gap:10px;justify-content:center;align-items:center}
+    .big{font-size:84px;line-height:1}
+    .kips{font-size:56px;opacity:.95}
+    .acc{font-weight:600;text-align:center}
+    .reaction{font-weight:800;text-align:center}
+    .reaction.bigR{font-size:34px;color:#c01818}
+    .reaction.midR{font-size:24px}
+    .reaction.smallR{font-size:20px}
+    .btns{display:flex;flex-direction:column;gap:10px}
+    button{border:0;border-radius:14px;padding:14px 12px;font-weight:700;font-size:16px;background:#111;color:#fff}
+    button:active{transform:scale(.99)}
+    .hint{opacity:.7;font-size:13px;text-align:center}
+    .shake{animation:shake .12s linear 0s 10}
+    @keyframes shake{
+      0%{transform:translate(0,0)} 25%{transform:translate(2px,-1px)}
+      50%{transform:translate(-2px,1px)} 75%{transform:translate(2px,1px)}
+      100%{transform:translate(0,0)}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Gözde-chan Mini</h1>
+
+    <div id="scene" class="card scene">
+      <div class="row">
+        <div id="gozde" class="big">😐</div>
+        <div id="kips" class="kips">🐈‍⬛</div>
+      </div>
+      <div id="acc" class="acc"></div>
+      <div id="react" class="reaction"></div>
+      <div class="hint">İş seç, küçük aksilik gelsin, Gözde-chan patlasın.</div>
+    </div>
+
+    <div class="card btns">
+      <button onclick="play('coffee')">Kahve yap</button>
+      <button onclick="play('plants')">Bitkileri sula</button>
+      <button onclick="play('cleaning')">Temizlik yap</button>
+      <button onclick="play('work')">Çalış</button>
+    </div>
+  </div>
+
+<script>
+  const accidents = {
+    coffee: ["Kahve taştı", "Kupa devrildi", "Süt bitti"],
+    plants: ["Saksı devrildi", "Toprak her yere döküldü", "Yaprak koptu"],
+    cleaning: ["Deterjan döküldü", "Kova tekme yedi", "Bez ortada yok"],
+    work: ["Laptop dondu", "Wi-Fi gitti", "Dosya kayboldu"]
+  };
+
+  const reactions = [
+    {t:"ÇÜŞ!", i:1},
+    {t:"abarttt", i:1},
+    {t:"Midemi bulandı", i:1},
+
+    {t:"Benim pasif agresiflik", i:2},
+    {t:"Çok iyiydi heralde 😒", i:2},
+    {t:"İşten kovulmak istiyorum", i:2},
+    {t:"Sinirden ağladım", i:2},
+
+    {t:"Pardon da sen kimsin amcık", i:3},
+    {t:"Sana mı sorduk amck", i:3},
+    {t:"Siktir git hadi amcık", i:3},
+    {t:"Mal her yerde mal demek ki", i:3},
+    {t:"Patlıcam", i:3},
+    {t:"Sana yağmurlu havada su yok götümmm", i:3},
+    {t:"En nefret ettiğim tipler ya", i:3},
+    {t:"Herkesten nefret ediyorum", i:3},
+    {t:"salak amck", i:3}
+  ];
+
+  const gozdeEl = document.getElementById("gozde");
+  const sceneEl = document.getElementById("scene");
+  const accEl = document.getElementById("acc");
+  const reactEl = document.getElementById("react");
+
+  function rnd(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  let lock = false;
+
+  function play(task){
+    if(lock) return;
+    lock = true;
+
+    const acc = rnd(accidents[task] || ["Bir şey oldu"]);
+    const r = rnd(reactions);
+
+    accEl.textContent = acc;
+    reactEl.textContent = r.t;
+
+    reactEl.className = "reaction " + (r.i===3 ? "bigR" : (r.i===2 ? "midR" : "smallR"));
+
+    if(r.i===3){
+      gozdeEl.textContent = "😡";
+      sceneEl.classList.add("shake");
+    } else if(r.i===2){
+      gozdeEl.textContent = "😒";
+    } else {
+      gozdeEl.textContent = "😮";
+    }
+
+    setTimeout(() => {
+      sceneEl.classList.remove("shake");
+      gozdeEl.textContent = "😐";
+      accEl.textContent = "";
+      reactEl.textContent = "";
+      lock = false;
+    }, 2200);
+  }
+</script>
+</body>
+</html>
