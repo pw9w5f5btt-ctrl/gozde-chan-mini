@@ -26,6 +26,7 @@
       margin:6px 0 0;
       font-size:34px;
       text-align:center;
+      letter-spacing:.2px;
     }
     .card{
       width:100%;
@@ -35,66 +36,86 @@
       box-shadow:0 10px 26px rgba(0,0,0,.10);
       box-sizing:border-box;
     }
+
     .scene{
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:10px;
+      position:relative;
     }
+
     .row{
       display:flex;
       gap:14px;
       justify-content:center;
       align-items:flex-end;
-      flex-wrap:wrap;
     }
+
     .sprite{
-      width:120px;
+      width:96px;
       height:auto;
       image-rendering:auto;
-      -webkit-user-drag:none;
       user-select:none;
+      -webkit-user-drag:none;
+      display:block;
     }
+
+    /* Önemli: görseller tıklamayı engellemesin */
+    .row, .sprite{
+      pointer-events:none;
+    }
+
     .hint{
-      opacity:.85;
+      opacity:.8;
       font-size:14px;
       text-align:center;
-      margin:0;
+      margin-top:2px;
+    }
+
+    .acc{
+      font-weight:700;
+      text-align:center;
+      min-height:20px;
     }
 
     .reaction{
       font-weight:800;
       text-align:center;
-      margin-top:8px;
-      min-height:44px;
-      line-height:1.2;
+      min-height:28px;
     }
-    .reaction.bigR{ font-size:34px; }
+    .reaction.bigR{ font-size:34px; color:#c01818; }
     .reaction.midR{ font-size:24px; }
     .reaction.smallR{ font-size:20px; }
 
     .btns{
-      width:100%;
       display:flex;
       flex-direction:column;
       gap:12px;
       margin-top:6px;
+      width:100%;
+      position:relative;
+      z-index:5; /* butonlar üstte kalsın */
     }
     button{
-      width:100%;
       border:0;
       border-radius:14px;
       padding:14px 12px;
-      font-weight:700;
+      font-weight:800;
       font-size:16px;
       background:#111;
       color:#fff;
       cursor:pointer;
+      width:100%;
+      position:relative;
+      z-index:6;
       touch-action:manipulation;
     }
     button:active{ transform:scale(.99); }
 
-    .shake{ animation: shake .12s linear 0s 10; }
+    .shake{
+      animation:shake .12s linear 0s 10;
+    }
     @keyframes shake{
       0%{transform:translate(0,0)}
       25%{transform:translate(2px,-1px)}
@@ -111,20 +132,20 @@
 
     <div id="scene" class="card scene">
       <div class="row">
-        <!-- Dosya adların repo içinde birebir böyle olmalı -->
-        <img id="gozdeImg" class="sprite" src="gözde.png" alt="Gözde" />
-        <img id="kipsImg" class="sprite" src="kips.png" alt="Kıps" />
+        <img class="sprite" src="./gozde_idle.png" alt="Gözde sprite" />
+        <img class="sprite" src="./kips.png" alt="Kıps sprite" />
       </div>
 
-      <p class="hint">görev seç, hayat aksın Gözde-chan patlasın.</p>
+      <div id="acc" class="acc"></div>
+      <div id="reaction" class="reaction"></div>
 
-      <div id="reaction" class="reaction midR"></div>
+      <div class="hint">görev seç, hayat aksın Gözde-chan patlasın.</div>
 
       <div class="btns">
-        <button type="button" data-task="coffee">Kahve yap</button>
-        <button type="button" data-task="plants">Bitkileri sula</button>
-        <button type="button" data-task="cleaning">Temizlik yap</button>
-        <button type="button" data-task="work">Çalış</button>
+        <button type="button" data-action="coffee">Kahve yap</button>
+        <button type="button" data-action="plants">Bitkileri sula</button>
+        <button type="button" data-action="cleaning">Temizlik yap</button>
+        <button type="button" data-action="work">Çalış</button>
       </div>
     </div>
   </div>
@@ -133,61 +154,68 @@
     const accidents = {
       coffee: ["Kahve taştı", "Kupa devrildi", "Süt bitti"],
       plants: ["Saksı devrildi", "Toprak her yere döküldü", "Yaprak koptu"],
-      cleaning: ["Deterjan döküldü", "Kıps kedi kovayı devirdi", "Bez ortada yok"],
+      cleaning: ["Deterjan döküldü", "Kova tekme yedi", "Bez ortada yok"],
       work: ["Laptop dondu", "Wi-Fi gitti", "Dosya kayboldu"]
     };
 
-    / yayınlanabilir ters cevaplar
     const reactions = [
-      { t:"ÇÜŞ!", i:1 },
-      { t:"abarttt", i:1 },
-      { t:"Midemi bulandırdı", i:1 },
+      {t:"ÇÜŞ!", i:1},
+      {t:"abarttt", i:1},
+      {t:"Midemi bulandı", i:1},
 
-      { t:"Benim pasif agresifliğim", i:2 },
-      { t:"İşten kovulmak istiyorum", i:2 },
-      { t:"Sinirden ağladım", i:2 },
+      {t:"Benim pasif agresiflik", i:2},
+      {t:"Çok iyiydi heralde 😒", i:2},
+      {t:"İşten kovulmak istiyorum", i:2},
+      {t:"Sinirden ağladım", i:2},
 
-      { t:"Pardon da sen kimsin ya?", i:3 },
-      { t:"Sana mı sorduk amck?", i:3 },
-      { t:"Hadi ya, sie", i:3 },
-      { t:"Mal her yerde mal demek ki", i:3 },
-      { t:"Patlıcam", i:3 },
-      { t:"Bugün su yok, kapalıyız", i:3 },
-      { t:"En nefret ettiğim tipler", i:3 },
-      { t:"Herkesten nefret ediyorum", i:3 },
-      { t:"Ya bi sktrgit", i:3 }
+      {t:"Pardon da sen kimsin amcık", i:3},
+      {t:"Sana mı sorduk amck", i:3},
+      {t:"Siktir git hadi amcık", i:3},
+      {t:"Mal her yerde mal demek ki", i:3},
+      {t:"Patlıcam", i:3},
+      {t:"Sana yağmurlu havada su yok götümmm", i:3},
+      {t:"En nefret ettiğim tipler ya", i:3},
+      {t:"Herkesten nefret ediyorum", i:3},
+      {t:"salak amck", i:3}
     ];
 
+    const accEl = document.getElementById("acc");
+    const rEl = document.getElementById("reaction");
+    const sceneEl = document.getElementById("scene");
+
     function pick(arr){
-      return arr[Math.floor(Math.random()*arr.length)];
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function setReaction(text, intensity){
-      const el = document.getElementById("reaction");
-      el.textContent = text;
-      el.classList.remove("smallR","midR","bigR");
-
-      if(intensity === 3) el.classList.add("bigR");
-      else if(intensity === 2) el.classList.add("midR");
-      else el.classList.add("smallR");
-
-      const scene = document.getElementById("scene");
-      scene.classList.remove("shake");
-      void scene.offsetWidth;
-      scene.classList.add("shake");
+    function setReactionClass(level){
+      rEl.classList.remove("bigR","midR","smallR");
+      if(level === 3) rEl.classList.add("bigR");
+      else if(level === 2) rEl.classList.add("midR");
+      else rEl.classList.add("smallR");
     }
 
-    function doTask(taskKey){
-      const accident = pick(accidents[taskKey] || ["Bir şey oldu"]);
-      const reaction = pick(reactions);
-      setReaction(accident + " | " + reaction.t, reaction.i);
+    function play(action){
+      const a = pick(accidents[action] || ["Bir şeyler oldu"]);
+      const r = pick(reactions);
+
+      accEl.textContent = a;
+      rEl.textContent = r.t;
+      setReactionClass(r.i);
+
+      sceneEl.classList.remove("shake");
+      void sceneEl.offsetWidth;
+      if(r.i >= 2) sceneEl.classList.add("shake");
+
+      if(navigator.vibrate && r.i >= 2){
+        navigator.vibrate(r.i === 3 ? [40,40,40] : 30);
+      }
     }
 
-    // Butonlara click bağla
-    document.querySelectorAll("button[data-task]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        doTask(btn.dataset.task);
-      });
+    document.querySelectorAll("button[data-action]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        play(btn.dataset.action);
+      }, { passive:false });
     });
   </script>
 </body>
