@@ -6,82 +6,111 @@
   <title>Gözde-chan Mini</title>
 
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Arial, sans-serif;
-      background: #f4f2ee;
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:#f4f2ee;
+    }
+    .wrap{
+      max-width:420px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      padding:22px 18px;
+      box-sizing:border-box;
+    }
+    h1{
+      margin:6px 0 0;
+      font-size:34px;
+      text-align:center;
+    }
+    .card{
+      width:100%;
+      background:#fff;
+      border-radius:18px;
+      padding:18px 16px;
+      box-shadow:0 10px 26px rgba(0,0,0,.10);
+      box-sizing:border-box;
+    }
+    .scene{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      text-align:center;
+    }
+    .row{
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:14px;
+    }
+    .sprite{
+      width:110px;
+      height:auto;
+      image-rendering:auto;
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none; /* sprite tıklamayı engellemesin */
+    }
+    .big{
+      font-size:78px;
+      line-height:1;
+    }
+    .kips{
+      font-size:54px;
+      opacity:.95;
+    }
+    .acc{
+      font-weight:700;
+      font-size:15px;
+    }
+    .reaction{
+      font-weight:800;
+      text-align:center;
+    }
+    .reaction.bigR{ font-size:34px; color:#c01818; }
+    .reaction.midR{ font-size:24px; }
+    .reaction.smallR{ font-size:20px; }
+
+    .btns{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:4px;
+    }
+    button{
+      width:100%;
+      border:0;
+      border-radius:14px;
+      padding:14px 12px;
+      font-weight:800;
+      font-size:16px;
+      background:#111;
+      color:#fff;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+    button:active{ transform:scale(.99); }
+    .hint{
+      opacity:.75;
+      font-size:13px;
+      margin:0;
     }
 
-    .wrap {
-      max-width: 420px;
-      margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      padding: 18px;
+    .shake{
+      animation:shake .12s linear 0s 10;
     }
-
-    h1 {
-      font-size: 22px;
-      margin: 8px 0;
-      text-align: center;
-    }
-
-    .scene {
-      background: #fff;
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gozde {
-      width: 96px;
-      image-rendering: auto;
-    }
-
-    .kips {
-      width: 72px;
-      opacity: 0.95;
-    }
-
-    .desc {
-      font-size: 14px;
-      text-align: center;
-    }
-
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      background: #111;
-      color: #fff;
-    }
-
-    button:active {
-      transform: scale(0.98);
+    @keyframes shake{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(2px,-1px)}
+      50%{transform:translate(-2px,1px)}
+      75%{transform:translate(2px,1px)}
+      100%{transform:translate(0,0)}
     }
   </style>
 </head>
@@ -90,23 +119,54 @@
   <div class="wrap">
     <h1>Gözde-chan Mini</h1>
 
-    <div class="scene">
-      <div class="row">
-        <img src="gozde_idle.png" alt="Gözde" class="gozde" />
-        <img src="kips.png" alt="Kıps" class="kips" />
+    <div class="card scene" id="scene">
+      <div class="row" aria-label="Karakterler">
+        <img class="sprite" src="gozde_idle.png" alt="Gözde" />
+        <img class="sprite" src="kips.png" alt="Kıps" />
       </div>
 
-      <div class="desc">
-        görev seç, hayat aksın Gözde-chan patlasın.
+      <div class="acc" id="subtitle">görev seç, hayat aksın Gözde-chan patlasın.</div>
+      <div class="reaction midR" id="reaction">Hazır mısın</div>
+
+      <div class="btns">
+        <button type="button" data-action="coffee">Kahve yap</button>
+        <button type="button" data-action="water">Bitkileri sula</button>
+        <button type="button" data-action="clean">Temizlik yap</button>
+        <button type="button" data-action="work">Çalış</button>
       </div>
 
-      <div class="buttons">
-        <button>Kahve yap</button>
-        <button>Bitkileri sula</button>
-        <button>Temizlik yap</button>
-        <button>Çalış</button>
-      </div>
+      <p class="hint">Butona bas, Gözde-chan biraz aksilikle güçlensin.</p>
     </div>
   </div>
+
+  <script>
+    const scene = document.getElementById("scene");
+    const reaction = document.getElementById("reaction");
+
+    const lines = {
+      coffee: ["Kahve modu", "Köpük tam kıvam", "Kıps izliyor 👁️"],
+      water:  ["Bitkiler", "Bugün de yaşadılar", "Toprak mis gibi"],
+      clean:  ["Temizlik", "Bir şeyler yoluna giriyor", "Bir yer yine kirlenecek"],
+      work:   ["Çalış", "Odak", "Gözde-chan patlıyor"]
+    };
+
+    function pick(arr){
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function doShake(){
+      scene.classList.remove("shake");
+      void scene.offsetWidth;
+      scene.classList.add("shake");
+    }
+
+    document.querySelectorAll("button[data-action]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-action");
+        reaction.textContent = pick(lines[key]);
+        doShake();
+      }, { passive: true });
+    });
+  </script>
 </body>
 </html>
