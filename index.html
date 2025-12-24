@@ -6,92 +6,136 @@
   <title>Gözde-chan Mini</title>
 
   <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f4f2ee;
+    :root{
+      --bg:#f4f2ee;
+      --card:#ffffff;
+      --text:#141414;
+      --muted:#6b6b6b;
+      --btn:#111111;
+      --btnText:#ffffff;
+      --shadow:0 12px 28px rgba(0,0,0,.12);
+      --radius:18px;
     }
 
-    .wrap {
-      max-width: 420px;
-      margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
 
-    h1 {
-      margin: 0 0 14px 0;
-      text-align: center;
-      font-size: 28px;
+    .wrap{
+      max-width:420px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      padding:22px 18px;
     }
 
-    .card {
-      width: 100%;
-      background: #fff;
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 26px rgba(0,0,0,.1);
+    h1{
+      margin:6px 0 0;
+      font-size:34px;
+      text-align:center;
     }
 
-    .scene {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+    .card{
+      width:100%;
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px 16px;
+      box-shadow:var(--shadow);
     }
 
-    .row {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      justify-content: center;
+    .scene{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      position:relative;
+      pointer-events:auto;
     }
 
-    .row img {
-      width: 110px;
-      height: auto;
-      pointer-events: none; /* çok önemli */
+    .row{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      align-items:center;
     }
 
-    .hint {
-      text-align: center;
-      font-size: 14px;
-      opacity: .8;
+    .sprite{
+      width:96px;
+      height:auto;
+      image-rendering:auto;
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
     }
 
-    .reaction {
-      font-weight: 800;
-      font-size: 22px;
-      text-align: center;
-      min-height: 30px;
+    .acc{
+      font-weight:600;
+      text-align:center;
+      margin-top:2px;
     }
 
-    .btns {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
+    .reaction{
+      font-weight:800;
+      text-align:center;
+      line-height:1.15;
+      margin:2px 0 0;
     }
 
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 700;
-      background: #111;
-      color: #fff;
-      cursor: pointer;
+    .r1{ font-size:20px; color:#333; }
+    .r2{ font-size:24px; color:#111; }
+    .r3{ font-size:34px; color:#c01818; }
+
+    .hint{
+      opacity:.75;
+      font-size:13px;
+      text-align:center;
+      margin-top:-2px;
+      color:var(--muted);
     }
 
-    button:active {
-      transform: scale(.97);
+    .btns{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+      position:relative;
+      z-index:2;
+      pointer-events:auto;
+    }
+
+    button{
+      width:100%;
+      border:0;
+      border-radius:14px;
+      padding:14px 12px;
+      font-weight:700;
+      font-size:16px;
+      background:var(--btn);
+      color:var(--btnText);
+      cursor:pointer;
+      pointer-events:auto;
+      touch-action:manipulation;
+    }
+    button:active{ transform:scale(.99); }
+
+    .shake{
+      animation:shake .12s linear 0s 10;
+    }
+
+    @keyframes shake{
+      0%{transform:translate(0,0)}
+      25%{transform:translate(2px,-1px)}
+      50%{transform:translate(-2px,1px)}
+      75%{transform:translate(2px,1px)}
+      100%{transform:translate(0,0)}
     }
   </style>
 </head>
@@ -100,26 +144,22 @@
   <div class="wrap">
     <h1>Gözde-chan Mini</h1>
 
-    <div class="card">
-      <div class="scene">
-        <div class="row">
-          <!-- SABİT İSİMLER -->
-          <img src="gozde_idle.png" alt="Gözde">
-          <img src="kips.png" alt="Kıps">
-        </div>
+    <div class="card scene" id="scene">
+      <div class="row">
+        <img class="sprite" id="gozdeImg" src="./gozde_idle.png" alt="Gözde" />
+        <img class="sprite" id="kipsImg" src="./kips.png" alt="Kıps" />
+      </div>
 
-        <div class="reaction" id="reaction">Hazırım.</div>
+      <div class="hint">görev seç, hayat aksın Gözde-chan patlasın.</div>
 
-        <div class="hint">
-          görev seç, hayat aksın Gözde-chan patlasın.
-        </div>
+      <div class="acc" id="accText"> </div>
+      <div class="reaction r1" id="reactText"> </div>
 
-        <div class="btns">
-          <button onclick="doTask('coffee')">Kahve yap</button>
-          <button onclick="doTask('plants')">Bitkileri sula</button>
-          <button onclick="doTask('cleaning')">Temizlik yap</button>
-          <button onclick="doTask('work')">Çalış</button>
-        </div>
+      <div class="btns">
+        <button id="btnCoffee" type="button">Kahve yap</button>
+        <button id="btnPlants" type="button">Bitkileri sula</button>
+        <button id="btnCleaning" type="button">Temizlik yap</button>
+        <button id="btnWork" type="button">Çalış</button>
       </div>
     </div>
   </div>
@@ -153,12 +193,38 @@
       {t:"salak amck", i:3}
     ];
 
-    function doTask(type) {
-      const acc = accidents[type];
-      const a = acc[Math.floor(Math.random() * acc.length)];
-      const r = reactions[Math.floor(Math.random() * reactions.length)];
-      document.getElementById("reaction").innerText = a + " — " + r.t;
+    function pick(arr){
+      return arr[Math.floor(Math.random() * arr.length)];
     }
+
+    function setReaction(level){
+      const pool = reactions.filter(r => r.i === level);
+      return pick(pool);
+    }
+
+    function setText(key){
+      const accEl = document.getElementById("accText");
+      const reactEl = document.getElementById("reactText");
+      const scene = document.getElementById("scene");
+
+      const acc = pick(accidents[key]);
+      const r = pick(reactions);
+
+      accEl.textContent = acc;
+      reactEl.textContent = r.t;
+
+      reactEl.classList.remove("r1","r2","r3");
+      reactEl.classList.add(r.i === 1 ? "r1" : (r.i === 2 ? "r2" : "r3"));
+
+      scene.classList.remove("shake");
+      void scene.offsetWidth;
+      scene.classList.add("shake");
+    }
+
+    document.getElementById("btnCoffee").addEventListener("click", () => setText("coffee"));
+    document.getElementById("btnPlants").addEventListener("click", () => setText("plants"));
+    document.getElementById("btnCleaning").addEventListener("click", () => setText("cleaning"));
+    document.getElementById("btnWork").addEventListener("click", () => setText("work"));
   </script>
 </body>
 </html>
