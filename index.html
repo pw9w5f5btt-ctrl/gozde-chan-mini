@@ -124,49 +124,81 @@
         <img class="sprite" src="gozde_idle.png" alt="Gözde" />
         <img class="sprite" src="kips.png" alt="Kıps" />
       </div>
-
-      <div class="acc" id="subtitle">görev seç, hayat aksın Gözde-chan patlasın.</div>
-      <div class="reaction midR" id="reaction">Hazır mısın</div>
-
-      <div class="btns">
-        <button type="button" data-action="coffee">Kahve yap</button>
-        <button type="button" data-action="water">Bitkileri sula</button>
-        <button type="button" data-action="clean">Temizlik yap</button>
-        <button type="button" data-action="work">Çalış</button>
-      </div>
-
-      <p class="hint">Butona bas, Gözde-chan biraz aksilikle güçlensin.</p>
+    <div class="card btns">
+      <button onclick="play('coffee')">Kahve yap</button>
+      <button onclick="play('plants')">Bitkileri sula</button>
+      <button onclick="play('cleaning')">Temizlik yap</button>
+      <button onclick="play('work')">Çalış</button>
     </div>
   </div>
 
-  <script>
-    const scene = document.getElementById("scene");
-    const reaction = document.getElementById("reaction");
+<script>
+  const accidents = {
+    coffee: ["Kahve taştı", "Kupa devrildi", "Süt bitti"],
+    plants: ["Saksı devrildi", "Toprak her yere döküldü", "Yaprak koptu"],
+    cleaning: ["Deterjan döküldü", "Kova tekme yedi", "Bez ortada yok"],
+    work: ["Laptop dondu", "Wi-Fi gitti", "Dosya kayboldu"]
+  };
 
-    const lines = {
-      coffee: ["Kahve modu", "Köpük tam kıvam", "Kıps izliyor 👁️"],
-      water:  ["Bitkiler", "Bugün de yaşadılar", "Toprak mis gibi"],
-      clean:  ["Temizlik", "Bir şeyler yoluna giriyor", "Bir yer yine kirlenecek"],
-      work:   ["Çalış", "Odak", "Gözde-chan patlıyor"]
-    };
+  const reactions = [
+    {t:"ÇÜŞ!", i:1},
+    {t:"abarttt", i:1},
+    {t:"Midemi bulandı", i:1},
 
-    function pick(arr){
-      return arr[Math.floor(Math.random() * arr.length)];
+    {t:"Benim pasif agresiflik", i:2},
+    {t:"Çok iyiydi heralde 😒", i:2},
+    {t:"İşten kovulmak istiyorum", i:2},
+    {t:"Sinirden ağladım", i:2},
+
+    {t:"Pardon da sen kimsin amcık", i:3},
+    {t:"Sana mı sorduk amck", i:3},
+    {t:"Siktir git hadi amcık", i:3},
+    {t:"Mal her yerde mal demek ki", i:3},
+    {t:"Patlıcam", i:3},
+    {t:"Sana yağmurlu havada su yok götümmm", i:3},
+    {t:"En nefret ettiğim tipler ya", i:3},
+    {t:"Herkesten nefret ediyorum", i:3},
+    {t:"salak amck", i:3}
+  ];
+
+  const gozdeEl = document.getElementById("gozde");
+  const sceneEl = document.getElementById("scene");
+  const accEl = document.getElementById("acc");
+  const reactEl = document.getElementById("react");
+
+  function rnd(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  let lock = false;
+
+  function play(task){
+    if(lock) return;
+    lock = true;
+
+    const acc = rnd(accidents[task] || ["Bir şey oldu"]);
+    const r = rnd(reactions);
+
+    accEl.textContent = acc;
+    reactEl.textContent = r.t;
+
+    reactEl.className = "reaction " + (r.i===3 ? "bigR" : (r.i===2 ? "midR" : "smallR"));
+
+    if(r.i===3){
+      gozdeEl.textContent = "😡";
+      sceneEl.classList.add("shake");
+    } else if(r.i===2){
+      gozdeEl.textContent = "😒";
+    } else {
+      gozdeEl.textContent = "😮";
     }
 
-    function doShake(){
-      scene.classList.remove("shake");
-      void scene.offsetWidth;
-      scene.classList.add("shake");
-    }
-
-    document.querySelectorAll("button[data-action]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const key = btn.getAttribute("data-action");
-        reaction.textContent = pick(lines[key]);
-        doShake();
-      }, { passive: true });
-    });
-  </script>
+    setTimeout(() => {
+      sceneEl.classList.remove("shake");
+      gozdeEl.textContent = "😐";
+      accEl.textContent = "";
+      reactEl.textContent = "";
+      lock = false;
+    }, 2200);
+  }
+</script>
 </body>
 </html>
