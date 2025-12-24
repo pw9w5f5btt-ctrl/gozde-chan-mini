@@ -3,125 +3,95 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gözde-chan Mini</title>
+  <title>Gözde-chan seri sövüyor!</title>
 
   <style>
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:#f4f2ee;
-    }
-    .wrap{
-      max-width:420px;
-      margin:0 auto;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      padding:22px 18px;
-      box-sizing:border-box;
-    }
-    h1{
-      margin:6px 0 0;
-      font-size:34px;
-      text-align:center;
-      letter-spacing:.2px;
-    }
-    .card{
-      width:100%;
-      background:#fff;
-      border-radius:18px;
-      padding:18px 16px;
-      box-shadow:0 10px 26px rgba(0,0,0,.10);
-      box-sizing:border-box;
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f4f2ee;
     }
 
-    .scene{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:10px;
-      position:relative;
+    .wrap {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
     }
 
-    .row{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      align-items:flex-end;
+    h1 {
+      margin: 0 0 14px 0;
+      text-align: center;
+      font-size: 28px;
     }
 
-    .sprite{
-      width:96px;
-      height:auto;
-      image-rendering:auto;
-      user-select:none;
-      -webkit-user-drag:none;
-      display:block;
+    .card {
+      width: 100%;
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.1);
     }
 
-    /* Önemli: görseller tıklamayı engellemesin */
-    .row, .sprite{
-      pointer-events:none;
+    .scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
-    .hint{
-      opacity:.8;
-      font-size:14px;
-      text-align:center;
-      margin-top:2px;
+    .row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: center;
     }
 
-    .acc{
-      font-weight:700;
-      text-align:center;
-      min-height:20px;
+    .row img {
+      width: 110px;
+      height: auto;
+      pointer-events: none; /* çok önemli */
     }
 
-    .reaction{
-      font-weight:800;
-      text-align:center;
-      min-height:28px;
+    .hint {
+      text-align: center;
+      font-size: 14px;
+      opacity: .8;
     }
-    .reaction.bigR{ font-size:34px; color:#c01818; }
-    .reaction.midR{ font-size:24px; }
-    .reaction.smallR{ font-size:20px; }
 
-    .btns{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      margin-top:6px;
-      width:100%;
-      position:relative;
-      z-index:5; /* butonlar üstte kalsın */
+    .reaction {
+      font-weight: 800;
+      font-size: 22px;
+      text-align: center;
+      min-height: 30px;
     }
-    button{
-      border:0;
-      border-radius:14px;
-      padding:14px 12px;
-      font-weight:800;
-      font-size:16px;
-      background:#111;
-      color:#fff;
-      cursor:pointer;
-      width:100%;
-      position:relative;
-      z-index:6;
-      touch-action:manipulation;
-    }
-    button:active{ transform:scale(.99); }
 
-    .shake{
-      animation:shake .12s linear 0s 10;
+    .btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
     }
-    @keyframes shake{
-      0%{transform:translate(0,0)}
-      25%{transform:translate(2px,-1px)}
-      50%{transform:translate(-2px,1px)}
-      75%{transform:translate(2px,1px)}
-      100%{transform:translate(0,0)}
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(.97);
     }
   </style>
 </head>
@@ -130,22 +100,26 @@
   <div class="wrap">
     <h1>Gözde-chan Mini</h1>
 
-    <div id="scene" class="card scene">
-      <div class="row">
-        <img class="sprite" src="./gozde_idle.png" alt="Gözde sprite" />
-        <img class="sprite" src="./kips.png" alt="Kıps sprite" />
-      </div>
+    <div class="card">
+      <div class="scene">
+        <div class="row">
+          <!-- SABİT İSİMLER -->
+          <img src="gozde_idle.png" alt="Gözde">
+          <img src="kips.png" alt="Kıps">
+        </div>
 
-      <div id="acc" class="acc"></div>
-      <div id="reaction" class="reaction"></div>
+        <div class="reaction" id="reaction">Hazırım.</div>
 
-      <div class="hint">görev seç, hayat aksın Gözde-chan patlasın.</div>
+        <div class="hint">
+          görev seç, hayat aksın Gözde-chan patlasın.
+        </div>
 
-      <div class="btns">
-        <button type="button" data-action="coffee">Kahve yap</button>
-        <button type="button" data-action="plants">Bitkileri sula</button>
-        <button type="button" data-action="cleaning">Temizlik yap</button>
-        <button type="button" data-action="work">Çalış</button>
+        <div class="btns">
+          <button onclick="doTask('coffee')">Kahve yap</button>
+          <button onclick="doTask('plants')">Bitkileri sula</button>
+          <button onclick="doTask('cleaning')">Temizlik yap</button>
+          <button onclick="doTask('work')">Çalış</button>
+        </div>
       </div>
     </div>
   </div>
@@ -179,44 +153,12 @@
       {t:"salak amck", i:3}
     ];
 
-    const accEl = document.getElementById("acc");
-    const rEl = document.getElementById("reaction");
-    const sceneEl = document.getElementById("scene");
-
-    function pick(arr){
-      return arr[Math.floor(Math.random() * arr.length)];
+    function doTask(type) {
+      const acc = accidents[type];
+      const a = acc[Math.floor(Math.random() * acc.length)];
+      const r = reactions[Math.floor(Math.random() * reactions.length)];
+      document.getElementById("reaction").innerText = a + " — " + r.t;
     }
-
-    function setReactionClass(level){
-      rEl.classList.remove("bigR","midR","smallR");
-      if(level === 3) rEl.classList.add("bigR");
-      else if(level === 2) rEl.classList.add("midR");
-      else rEl.classList.add("smallR");
-    }
-
-    function play(action){
-      const a = pick(accidents[action] || ["Bir şeyler oldu"]);
-      const r = pick(reactions);
-
-      accEl.textContent = a;
-      rEl.textContent = r.t;
-      setReactionClass(r.i);
-
-      sceneEl.classList.remove("shake");
-      void sceneEl.offsetWidth;
-      if(r.i >= 2) sceneEl.classList.add("shake");
-
-      if(navigator.vibrate && r.i >= 2){
-        navigator.vibrate(r.i === 3 ? [40,40,40] : 30);
-      }
-    }
-
-    document.querySelectorAll("button[data-action]").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        play(btn.dataset.action);
-      }, { passive:false });
-    });
   </script>
 </body>
 </html>
