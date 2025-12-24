@@ -2,128 +2,50 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>Gözde-chan Mini</title>
-
   <style>
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      background:#f4f2ee;
-    }
-    .wrap{
-      max-width:420px;
-      margin:0 auto;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      padding:22px 18px;
-      box-sizing:border-box;
-    }
-    h1{
-      margin:6px 0 0;
-      font-size:34px;
-      text-align:center;
-    }
-    .card{
-      width:100%;
-      background:#fff;
-      border-radius:18px;
-      padding:18px 16px;
-      box-shadow:0 10px 26px rgba(0,0,0,.10);
-      box-sizing:border-box;
-    }
-    .scene{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:12px;
-      text-align:center;
-    }
-    .row{
-      display:flex;
-      justify-content:center;
-      align-items:flex-end;
-      gap:14px;
-    }
-    .sprite{
-      width:110px;
-      height:auto;
-      image-rendering:auto;
-      user-select:none;
-      -webkit-user-drag:none;
-      pointer-events:none; /* sprite tıklamayı engellemesin */
-    }
-    .big{
-      font-size:78px;
-      line-height:1;
-    }
-    .kips{
-      font-size:54px;
-      opacity:.95;
-    }
-    .acc{
-      font-weight:700;
-      font-size:15px;
-    }
-    .reaction{
-      font-weight:800;
-      text-align:center;
-    }
-    .reaction.bigR{ font-size:34px; color:#c01818; }
-    .reaction.midR{ font-size:24px; }
-    .reaction.smallR{ font-size:20px; }
-
-    .btns{
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top:4px;
-    }
-    button{
-      width:100%;
-      border:0;
-      border-radius:14px;
-      padding:14px 12px;
-      font-weight:800;
-      font-size:16px;
-      background:#111;
-      color:#fff;
-      cursor:pointer;
-      touch-action:manipulation;
-    }
-    button:active{ transform:scale(.99); }
-    .hint{
-      opacity:.75;
-      font-size:13px;
-      margin:0;
-    }
-
-    .shake{
-      animation:shake .12s linear 0s 10;
-    }
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;background:#f4f2ee}
+    .wrap{max-width:420px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;gap:14px;padding:18px}
+    .card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+    h1{font-size:18px;margin:4px 0 0;text-align:center}
+    .scene{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .row{display:flex;gap:10px;justify-content:center;align-items:center}
+    .big{font-size:84px;line-height:1}
+    .kips{font-size:56px;opacity:.95}
+    .acc{font-weight:600;text-align:center}
+    .reaction{font-weight:800;text-align:center}
+    .reaction.bigR{font-size:34px;color:#c01818}
+    .reaction.midR{font-size:24px}
+    .reaction.smallR{font-size:20px}
+    .btns{display:flex;flex-direction:column;gap:10px}
+    button{border:0;border-radius:14px;padding:14px 12px;font-weight:700;font-size:16px;background:#111;color:#fff}
+    button:active{transform:scale(.99)}
+    .hint{opacity:.7;font-size:13px;text-align:center}
+    .shake{animation:shake .12s linear 0s 10}
     @keyframes shake{
-      0%{transform:translate(0,0)}
-      25%{transform:translate(2px,-1px)}
-      50%{transform:translate(-2px,1px)}
-      75%{transform:translate(2px,1px)}
+      0%{transform:translate(0,0)} 25%{transform:translate(2px,-1px)}
+      50%{transform:translate(-2px,1px)} 75%{transform:translate(2px,1px)}
       100%{transform:translate(0,0)}
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <h1>Gözde-chan Mini</h1>
 
-    <div class="card scene" id="scene">
-      <div class="row" aria-label="Karakterler">
-        <img class="sprite" src="gozde_idle.png" alt="Gözde" />
-        <img class="sprite" src="kips.png" alt="Kıps" />
+    <div id="scene" class="card scene">
+      <div class="row">
+        <img class="sprite" id="gozdeImg" src="./gozde_idle.png" alt="Gözde" />
+        <img class="sprite" id="kipsImg" src="./kips.png" alt="Kıps" />
       </div>
+      <div id="acc" class="acc"></div>
+      <div id="react" class="reaction"></div>
+      <div class="hint">görev seç, Gözde-chan patlasın.</div>
+    </div>
+
     <div class="card btns">
       <button onclick="play('coffee')">Kahve yap</button>
       <button onclick="play('plants')">Bitkileri sula</button>
